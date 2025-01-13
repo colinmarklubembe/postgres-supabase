@@ -57,6 +57,20 @@ class UserController {
       return res.status(500).json({ error: "Error deleting users" });
     }
   };
+
+  deleteUser = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { id } = req.params;
+      const user = await userService.fetchUserById(Number(id));
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      await userService.deleteUser(Number(id));
+      return res.status(204).json({ message: "User deleted" });
+    } catch (error) {
+      return res.status(500).json({ error: "Error deleting user" });
+    }
+  };
 }
 
 export default new UserController();
